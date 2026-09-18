@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="MinhHoaCollection/MinhHoaCollection.csproj" />
+  <Project Path="MinhHoaDaHinh_SortLib/MinhHoaDaHinh_SortLib.csproj" />
+  <Project Path="MinhHoaDaHinh_SortLib_TestLib/MinhHoaDaHinh_SortLib_TestLib.csproj" />
+  <Project Path="MinhHoaDaHinh_ViDu01/MinhHoaDaHinh_ViDu01.csproj" />
+  <Project Path="TinhToanPhanSo/TinhToanPhanSo.csproj" />
+</Solution>
