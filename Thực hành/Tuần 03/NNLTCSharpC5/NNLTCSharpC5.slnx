@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="MinhHoaDaHinh_ConLib_ConsoleMenuLib/MinhHoaDaHinh_ConLib_ConsoleMenuLib.csproj" />
+  <Project Path="MinhHoaDaHinh_ConLib_GiaiPTBac1App/MinhHoaDaHinh_ConLib_GiaiPTBac1App.csproj" />
+  <Project Path="MinhHoaDaHinh_ConLib_TinhToanApp/MinhHoaDaHinh_ConLib_TinhToanApp.csproj" />
+</Solution>
