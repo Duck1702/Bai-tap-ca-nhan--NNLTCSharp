@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DentalPaymentApp/DentalPaymentApp.csproj" />
+  <Project Path="SecurityPanelApp/SecurityPanelApp.csproj" />
+</Solution>
