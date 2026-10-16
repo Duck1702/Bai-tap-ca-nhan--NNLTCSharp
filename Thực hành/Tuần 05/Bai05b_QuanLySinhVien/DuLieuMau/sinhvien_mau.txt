@@ -1,0 +1,3 @@
+{"Loai": "Đại học", "MSSV": "SV0001", "HoTen": "Nguyễn Văn An", "NgaySinh": "2005-04-15T00:00:00", "DiaChi": "TP.HCM", "DienThoai": "0901234567", "NienKhoa": 2023, "ChuyenNganh": "CNPM", "Bang1": null, "DonViCongTac": null}
+{"Loai": "Cao đẳng", "MSSV": "SV0002", "HoTen": "Trần Thị Bích", "NgaySinh": "2004-08-26T00:00:00", "DiaChi": "Đồng Nai", "DienThoai": "0912345678", "NienKhoa": 2022, "ChuyenNganh": null, "Bang1": null, "DonViCongTac": null}
+{"Loai": "Bằng hai", "MSSV": "SV0003", "HoTen": "Lê Minh Cường", "NgaySinh": "1997-11-02T00:00:00", "DiaChi": "Tây Ninh", "DienThoai": "0987654321", "NienKhoa": 2025, "ChuyenNganh": null, "Bang1": "Kế toán", "DonViCongTac": "Công ty ABC"}
