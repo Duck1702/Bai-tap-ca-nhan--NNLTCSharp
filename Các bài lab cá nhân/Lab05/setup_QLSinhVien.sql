@@ -1,0 +1,74 @@
+CREATE DATABASE QLSinhVien;
+GO
+USE QLSinhVien;
+GO
+
+CREATE TABLE Khoa(
+    MaKhoa NVARCHAR(20) PRIMARY KEY,
+    TenKhoa NVARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Lop(
+    MaLop NVARCHAR(20) PRIMARY KEY,
+    TenLop NVARCHAR(100) NOT NULL,
+    MaKhoa NVARCHAR(20) NOT NULL,
+    CONSTRAINT FK_Lop_Khoa FOREIGN KEY(MaKhoa) REFERENCES Khoa(MaKhoa)
+);
+
+CREATE TABLE SinhVien(
+    MaSinhVien NVARCHAR(20) PRIMARY KEY,
+    HoTen NVARCHAR(100) NOT NULL,
+    NgaySinh DATE NOT NULL,
+    MaLop NVARCHAR(20) NOT NULL,
+    CONSTRAINT FK_SinhVien_Lop FOREIGN KEY(MaLop) REFERENCES Lop(MaLop)
+);
+
+CREATE TABLE MonHoc(
+    MaMonHoc NVARCHAR(20) PRIMARY KEY,
+    TenMonHoc NVARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Diem(
+    MaSinhVien NVARCHAR(20) NOT NULL,
+    MaMonHoc NVARCHAR(20) NOT NULL,
+    Diem FLOAT NOT NULL CHECK(Diem BETWEEN 0 AND 10),
+    CONSTRAINT PK_Diem PRIMARY KEY(MaSinhVien,MaMonHoc),
+    CONSTRAINT FK_Diem_SV FOREIGN KEY(MaSinhVien) REFERENCES SinhVien(MaSinhVien),
+    CONSTRAINT FK_Diem_MH FOREIGN KEY(MaMonHoc) REFERENCES MonHoc(MaMonHoc)
+);
+
+INSERT INTO Khoa VALUES
+(N'CNTT',N'Công nghệ thông tin'),
+(N'QTKD',N'Quản trị kinh doanh'),
+(N'KT',N'Kế toán'),
+(N'NN',N'Ngoại ngữ'),
+(N'DL',N'Du lịch');
+
+INSERT INTO Lop VALUES
+(N'DCT1241',N'Đại học CNTT 1',N'CNTT'),
+(N'DCT1242',N'Đại học CNTT 2',N'CNTT'),
+(N'DQT1241',N'Đại học QTKD 1',N'QTKD'),
+(N'DKT1241',N'Đại học Kế toán 1',N'KT'),
+(N'DNN1241',N'Đại học Ngoại ngữ 1',N'NN');
+
+INSERT INTO SinhVien VALUES
+(N'3122411044',N'Nguyễn Việt Đức','2004-01-15',N'DCT1241'),
+(N'3122411001',N'Nguyễn Văn An','2004-05-20',N'DCT1241'),
+(N'3122411002',N'Trần Minh Bình','2004-07-11',N'DCT1242'),
+(N'3122411003',N'Lê Hoàng Nam','2004-09-09',N'DQT1241'),
+(N'3122411004',N'Phạm Thanh Mai','2004-12-02',N'DKT1241');
+
+INSERT INTO MonHoc VALUES
+(N'CSharp',N'Lập trình C#'),
+(N'CSDL',N'Cơ sở dữ liệu'),
+(N'WEB',N'Lập trình Web'),
+(N'CTDL',N'Cấu trúc dữ liệu'),
+(N'MANG',N'Mạng máy tính');
+
+INSERT INTO Diem VALUES
+(N'3122411044',N'CSharp',9),
+(N'3122411001',N'CSharp',8),
+(N'3122411002',N'CSDL',7.5),
+(N'3122411003',N'WEB',8.5),
+(N'3122411004',N'CTDL',7);
+GO
