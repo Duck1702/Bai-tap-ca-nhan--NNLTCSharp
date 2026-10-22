@@ -1,0 +1,86 @@
+-- Bài thực hành 06d - mô hình QLTHUVIEN với 8 bảng theo tài liệu.
+-- Tài liệu có lệnh CREATE DATABASE QLTHUVIEN nhưng phần seed ghi USE ThuVien;
+-- ở đây dùng thống nhất QLTHUVIEN để tập lệnh chạy đúng.
+IF DB_ID(N'QLTHUVIEN') IS NULL CREATE DATABASE QLTHUVIEN;
+GO
+USE QLTHUVIEN;
+GO
+IF OBJECT_ID(N'dbo.THAMSO',N'U') IS NULL
+CREATE TABLE dbo.THAMSO (TenThamSo nvarchar(40) NOT NULL PRIMARY KEY, GiaTri int NULL);
+GO
+IF OBJECT_ID(N'dbo.BANGCAP',N'U') IS NULL
+CREATE TABLE dbo.BANGCAP (MaBangCap int IDENTITY(1,1) PRIMARY KEY, TenBangCap nvarchar(40) NULL);
+GO
+IF OBJECT_ID(N'dbo.NHANVIEN',N'U') IS NULL
+CREATE TABLE dbo.NHANVIEN (
+ MaNhanVien int IDENTITY(1,1) PRIMARY KEY,
+ HoTenNhanVien nvarchar(50) NULL, NgaySinh datetime NULL,
+ DiaChi nvarchar(50) NULL, DienThoai nvarchar(15) NULL, MaBangCap int NULL,
+ CONSTRAINT FK_NV_BC FOREIGN KEY(MaBangCap) REFERENCES dbo.BANGCAP(MaBangCap)
+);
+GO
+IF OBJECT_ID(N'dbo.DOCGIA',N'U') IS NULL
+CREATE TABLE dbo.DOCGIA (
+ MaDocGia int IDENTITY(1,1) PRIMARY KEY,
+ HoTenDocGia nvarchar(40) NULL, NgaySinh datetime NULL, DiaChi nvarchar(50) NULL,
+ Email nvarchar(30) NULL, NgayLapThe datetime NULL, NgayHetHan datetime NULL, TienNo float NULL
+);
+GO
+IF OBJECT_ID(N'dbo.SACH',N'U') IS NULL
+CREATE TABLE dbo.SACH (
+ MaSach int IDENTITY(1,1) PRIMARY KEY,
+ TenSach nvarchar(40) NULL, TacGia nvarchar(30) NULL, NamXuatBan int NULL,
+ NhaXuatBan nvarchar(40) NULL, TriGia float NULL, NgayNhap datetime NULL
+);
+GO
+IF OBJECT_ID(N'dbo.PHIEUMUONSACH',N'U') IS NULL
+CREATE TABLE dbo.PHIEUMUONSACH (
+ MaPhieuMuon int IDENTITY(1,1) PRIMARY KEY, NgayMuon datetime NOT NULL,
+ MaDocGia int NULL, CONSTRAINT FK_PMS_DG FOREIGN KEY(MaDocGia) REFERENCES dbo.DOCGIA(MaDocGia)
+);
+GO
+IF OBJECT_ID(N'dbo.CHITIETPHIEUMUON',N'U') IS NULL
+CREATE TABLE dbo.CHITIETPHIEUMUON (
+ MaSach int NOT NULL, MaPhieuMuon int NOT NULL,
+ CONSTRAINT PK_CTPM PRIMARY KEY(MaSach,MaPhieuMuon),
+ CONSTRAINT FK_CTPM_SACH FOREIGN KEY(MaSach) REFERENCES dbo.SACH(MaSach),
+ CONSTRAINT FK_CTPM_PHIEU FOREIGN KEY(MaPhieuMuon) REFERENCES dbo.PHIEUMUONSACH(MaPhieuMuon)
+);
+GO
+IF OBJECT_ID(N'dbo.PHIEUTHUTIEN',N'U') IS NULL
+CREATE TABLE dbo.PHIEUTHUTIEN (
+ MaPhieuThuTien int IDENTITY(1,1) PRIMARY KEY,
+ SoTienNo float NULL, SoTienThu float NULL, MaDocGia int NULL, MaNhanVien int NULL,
+ CONSTRAINT FK_PTT_DG FOREIGN KEY(MaDocGia) REFERENCES dbo.DOCGIA(MaDocGia),
+ CONSTRAINT FK_PTT_NV FOREIGN KEY(MaNhanVien) REFERENCES dbo.NHANVIEN(MaNhanVien)
+);
+GO
+IF NOT EXISTS(SELECT 1 FROM dbo.BANGCAP)
+ INSERT INTO dbo.BANGCAP(TenBangCap) VALUES (N'TIẾN SĨ'),(N'THẠC SĨ'),(N'ĐẠI HỌC'),(N'CAO ĐẲNG'),(N'TRUNG CẤP');
+IF NOT EXISTS(SELECT 1 FROM dbo.NHANVIEN)
+ INSERT INTO dbo.NHANVIEN(HoTenNhanVien,NgaySinh,DiaChi,DienThoai,MaBangCap) VALUES
+ (N'Nguyễn Minh Thành','1983-04-05',N'TP.HCM',N'0900000001',2),
+ (N'Phạm Minh Vũ','1980-01-24',N'Đồng Nai',N'0900000002',1),
+ (N'Nguyễn Hà My','1985-04-13',N'Tây Ninh',N'0900000003',3);
+IF NOT EXISTS(SELECT 1 FROM dbo.DOCGIA)
+ INSERT INTO dbo.DOCGIA(HoTenDocGia,NgaySinh,DiaChi,Email,NgayLapThe,NgayHetHan,TienNo) VALUES
+ (N'Lê Bảo Ngọc','2002-01-12',N'TP.HCM',N'ngoc@example.test','2026-01-01','2027-01-01',0),
+ (N'Trần Hải Nam','2001-08-02',N'Vũng Tàu',N'nam@example.test','2026-02-01','2027-02-01',50000),
+ (N'Hoàng Thu An','2003-11-23',N'Đồng Nai',N'an@example.test','2026-03-01','2027-03-01',0);
+IF NOT EXISTS(SELECT 1 FROM dbo.SACH)
+ INSERT INTO dbo.SACH(TenSach,TacGia,NamXuatBan,NhaXuatBan,TriGia,NgayNhap) VALUES
+ (N'Nhập môn CNPM',N'Phạm Minh Vũ',2021,N'NXB Giáo dục',70000,'2026-01-01'),
+ (N'Kỹ thuật lập trình',N'Trần Minh Thái',2020,N'NXB Trẻ',50000,'2026-02-01'),
+ (N'Công nghệ Web',N'Lê Tuấn Minh',2023,N'NXB Lao động',90000,'2026-03-01');
+IF NOT EXISTS(SELECT 1 FROM dbo.THAMSO)
+ INSERT INTO dbo.THAMSO VALUES (N'SoSachMuonToiDa',5),(N'SoNgayMuonToiDa',14);
+IF NOT EXISTS(SELECT 1 FROM dbo.PHIEUMUONSACH)
+ INSERT INTO dbo.PHIEUMUONSACH(NgayMuon,MaDocGia)
+ SELECT '2026-10-01',MIN(MaDocGia) FROM dbo.DOCGIA;
+IF NOT EXISTS(SELECT 1 FROM dbo.CHITIETPHIEUMUON)
+ INSERT INTO dbo.CHITIETPHIEUMUON(MaSach,MaPhieuMuon)
+ SELECT (SELECT MIN(MaSach) FROM dbo.SACH), (SELECT MIN(MaPhieuMuon) FROM dbo.PHIEUMUONSACH);
+IF NOT EXISTS(SELECT 1 FROM dbo.PHIEUTHUTIEN)
+ INSERT INTO dbo.PHIEUTHUTIEN(SoTienNo,SoTienThu,MaDocGia,MaNhanVien)
+ SELECT 50000,20000, (SELECT MIN(MaDocGia) FROM dbo.DOCGIA), (SELECT MIN(MaNhanVien) FROM dbo.NHANVIEN);
+GO
